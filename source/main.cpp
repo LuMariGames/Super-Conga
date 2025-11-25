@@ -22,6 +22,10 @@ void draw_debug(float x, float y, const char *text) {
 	C2D_DrawText(&dynText, C2D_WithColor, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(0.0f, 1.0f, 0.0f, 1.0f));
 }
 
+char *get_buffer() {
+	return buffer;
+}
+
 int main() {
 
 	romfsInit();
@@ -68,10 +72,6 @@ int main() {
 		}
 		C3D_FrameEnd(0);
 	}
-	audioExit()
+	audioExit();
 	exit(0);
-}
-
-char *get_buffer() {
-	return buffer;
 }
