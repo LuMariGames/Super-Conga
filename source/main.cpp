@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "header.h"
+#define BUFFER_SIZE 160
 
 C2D_Sprite sprites[32];	//画像用
 static C2D_SpriteSheet spriteSheet;
@@ -28,6 +29,7 @@ int main() {
 	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
 	C2D_Prepare();
 	g_dynamicBuf = C2D_TextBufNew(4096);
+	audioInit();
 	touchPosition tp;	//下画面タッチした座標
 
 	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
@@ -35,7 +37,7 @@ int main() {
 
 	while (aptMainLoop()) {
 
-		if (isExit) break;
+		if (keyhold == KEY_START) break;
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown(), keyhold = hidKeysHeld();
@@ -55,14 +57,19 @@ int main() {
 			draw_debug(120, 100, "Now Loading...");
 			C3D_FrameEnd(0);
 			scene_state = 0;
+			if (key == KEY_A) audioplay(0);
 			break;
 
 		case 1:	//test
 
-			draw_debug(debug ok);
+			draw_debug(0, 0, debug ok);
 			break;
 		}
 		C3D_FrameEnd(0);
 	}
 	exit(0);
+}
+
+char *get_buffer() {
+	return buffer;
 }
