@@ -29,7 +29,7 @@ char *get_buffer() {
 	return buffer;
 }
 
-inline void notes_button() {
+inline void notes_button(unsigned int key) {
 
 	if (key == KEY_A || key == KEY_B || key == KEY_X || key == KEY_Y) {
 		isRight = true;
@@ -94,6 +94,7 @@ int main() {
 		case 1:	//SOUNDTEST
 
 			draw_debug(0, 0, "SOUNDTEST");
+			notes_button(key);
 			if (isRight) C2D_DrawImage(sprites[0].image, &sprites[0].params, NULL);
 			if (isLeft) C2D_DrawImage(sprites[1].image, &sprites[1].params, NULL);
 			if (isLeft && isRight) C2D_DrawImage(sprites[2].image, &sprites[2].params, NULL);
