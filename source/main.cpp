@@ -39,6 +39,9 @@ inline void notes_button(unsigned int key) {
 		isLeft = true;
 		audioPlay(1);
 	}
+	if (isLeft && isRight) {
+		isLeft = false, isRight = false, isDouble = true;
+	}
 	if (key == KEY_L || key == KEY_R || key == KEY_ZL || key == KEY_ZR) {
 		isUp = true;
 		audioPlay(3);
@@ -58,18 +61,11 @@ int main() {
 
 	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-	int btcnt = 0;
 
 	while (aptMainLoop()) {
 
-		--btcnt;
-		if (btcnt < 1) isLeft = false, isRight = false, isDouble = false, isUp = false;
-		if ((isRight && isLeft) && btcnt > 0) {
-			isLeft = false, isRight = false, isDouble = true;
-		}
-		else if (isLeft != isRight) btcnt = 2;
-		else (!isLeft && !isRight) btcnt = 0;
-
+		notes_button(key);
+		isLeft = false, isRight = false, isUp = false;
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown(), keyhold = hidKeysHeld();
@@ -105,11 +101,12 @@ int main() {
 			notes_button(key);
 			if (isRight) C2D_DrawImage(sprites[0].image, &sprites[0].params, NULL);
 			if (isLeft) C2D_DrawImage(sprites[1].image, &sprites[1].params, NULL);
-			if (isLeft && isRight) C2D_DrawImage(sprites[2].image, &sprites[2].params, NULL);
+			if (isDouble) C2D_DrawImage(sprites[2].image, &sprites[2].params, NULL);
 			if (isUp) C2D_DrawImage(sprites[3].image, &sprites[3].params, NULL);
 			break;
 		}
 		C3D_FrameEnd(0);
+		isDouble = false;
 	}
 	audioExit();
 	exit(0);
