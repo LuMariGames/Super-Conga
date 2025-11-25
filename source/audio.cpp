@@ -9,7 +9,6 @@
 
 static ndspWaveBuf waveBuf[SOUND_NUMBER];
 static char* audioBuffer[SOUND_NUMBER] = {NULL};
-static bool isPlaying = false;
 
 bool audioInit(void) {
 
@@ -58,9 +57,9 @@ bool audioInit(void) {
 
 		// Set up wave buffer
 		memset(&waveBuf, 0, sizeof(ndspWaveBuf[i]));
-		waveBuf.data_vaddr = audioBuffer[i];
-		waveBuf.nsamples = size / 2; // 1 channels * 16-bit samples
-		waveBuf.looping = false;
+		waveBuf[i].data_vaddr = audioBuffer[i];
+		waveBuf[i].nsamples = size / 2; // 1 channels * 16-bit samples
+		waveBuf[i].looping = false;
 		DSP_FlushDataCache(audioBuffer[i], size);
 	}
 	return true;
