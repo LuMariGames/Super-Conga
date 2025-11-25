@@ -10,7 +10,7 @@ static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 int scene_state = 0;
-bool isLeft = false, isRight = false, isUp = false;
+bool isLeft = false, isRight = false, isDouble = false, isUp = false;
 char buffer[BUFFER_SIZE];
 
 inline void draw_debug(float x, float y, const char *text) {
@@ -58,11 +58,18 @@ int main() {
 
 	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-	audioPlay(0);
+	int btcnt = 0;
 
 	while (aptMainLoop()) {
 
-		isLeft = false, isRight = false, isUp = false;
+		--btcnt;
+		if (btcnt < 1) isLeft = false, isRight = false, isDouble = false, isUp = false;
+		if ((isRight && isLeft) && btcnt > 0) {
+			isLeft = false, isRight = false, isDouble = true;
+		}
+		else if (isLeft != isRight) btcnt = 2;
+		else (!isLeft && !isRight) btcnt = 0;
+
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown(), keyhold = hidKeysHeld();
