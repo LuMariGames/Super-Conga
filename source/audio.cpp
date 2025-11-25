@@ -8,7 +8,7 @@
 #define SOUND_NUMBER 4
 
 static ndspWaveBuf waveBuf[SOUND_NUMBER];
-static u8* audioBuffer[SOUND_NUMBER] = {NULL};
+static char* audioBuffer[SOUND_NUMBER] = {NULL};
 static bool isPlaying = false;
 
 bool audioInit(void) {
@@ -33,7 +33,7 @@ bool audioInit(void) {
 		fseek(file, 44, SEEK_SET);
 
 		// Allocate buffer
-		audioBuffer[i] = linearAlloc(BUFFER_SIZE);
+		audioBuffer[i] = (char*)linearAlloc(BUFFER_SIZE);
 		if (!audioBuffer[i]) {
 			printf("Failed to allocate audio buffer.\n");
 			fclose(file);
