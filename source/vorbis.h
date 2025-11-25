@@ -1,8 +1,8 @@
-﻿#pragma once
+#pragma once
 
 #include <tremor/ivorbisfile.h>
 #include <ogg/ogg.h>
-#include "playback.h"
+//#include "playback.h"
 
 void setVorbis(struct decoder_fn* decoder);
 int initVorbis(const char* file);

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "header.h"
 
 C2D_Sprite sprites[32];	//画像用
 static C2D_SpriteSheet spriteSheet;

@@ -1,10 +1,10 @@
-﻿#include <3ds.h>
+#include <3ds.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
 
-#include "main.h"
+//#include "main.h"
 #include "vorbis.h"
 #include "header.h"
 
