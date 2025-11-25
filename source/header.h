@@ -14,3 +14,8 @@
 
 #define C3D_CMDBUF_SIZE 0x40000
 #define VERSION "1.0.0"
+
+#define TOP_WIDTH  400
+#define TOP_HEIGHT 240
+#define BOTTOM_WIDTH  320
+#define BOTTOM_HEIGHT 240
