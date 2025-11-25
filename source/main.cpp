@@ -65,11 +65,11 @@ int main() {
 
 	while (aptMainLoop()) {
 
-		notes_button(key);
-		isLeft = false, isRight = false, isUp = false;
 		hidScanInput();
 		hidTouchRead(&tp);
 		key = hidKeysDown(), keyhold = hidKeysHeld();
+		notes_button(key);
+		isLeft = false, isRight = false, isUp = false;
 		if (keyhold == KEY_START) break;
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
@@ -109,6 +109,12 @@ int main() {
 		C3D_FrameEnd(0);
 		isDouble = false;
 	}
+	C2D_TextBufDelete(g_dynamicBuf);
+
 	audioExit();
+	C2D_Fini();
+	C3D_Fini();
+	gfxExit();
+	romfsExit();
 	exit(0);
 }
