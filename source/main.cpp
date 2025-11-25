@@ -62,6 +62,7 @@ int main() {
 
 	while (aptMainLoop()) {
 
+		isLeft = false, isRight = false, isUp = false;
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown(), keyhold = hidKeysHeld();
