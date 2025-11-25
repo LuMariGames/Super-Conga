@@ -9,6 +9,7 @@ static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 int scene_state = 0;
+char buffer[BUFFER_SIZE];
 
 void draw_debug(float x, float y, const char *text) {
 
@@ -67,7 +68,7 @@ int main() {
 
 		case 1:	//test
 
-			draw_debug(0, 0, debug ok);
+			draw_debug(0, 0, "debug ok");
 			break;
 		}
 		C3D_FrameEnd(0);
