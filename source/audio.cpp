@@ -7,8 +7,8 @@
 #define BUFFER_SIZE  0x6144
 #define SOUND_NUMBER 4
 
-static ndspWaveBuf waveBuf[SOUND_NUMBER];
-static char* audioBuffer[SOUND_NUMBER] = {NULL};
+ndspWaveBuf waveBuf[SOUND_NUMBER];
+char* audioBuffer[SOUND_NUMBER] = {NULL};
 
 bool audioInit(void) {
 
@@ -45,18 +45,19 @@ bool audioInit(void) {
 
 		if (size == 0) {
 			printf("No audio data read.\n");
-			linearFree(audioBuffer);
+			linearFree(audioBuffer[i]);
 			return false;
 		}
 
 		// Configure NDSP
 		ndspChnReset(i);
+		ndspChnInitParams(i);
 		ndspChnSetInterp(i, NDSP_INTERP_LINEAR);
 		ndspChnSetRate(i, SAMPLE_RATE);
 		ndspChnSetFormat(i, NDSP_FORMAT_MONO_PCM16);
 
 		// Set up wave buffer
-		memset(&waveBuf, 0, sizeof(ndspWaveBuf[i]));
+		memset(&waveBuf[i], 0, sizeof(ndspWaveBuf));
 		waveBuf[i].data_vaddr = audioBuffer[i];
 		waveBuf[i].nsamples = size / 2; // 1 channels * 16-bit samples
 		waveBuf[i].looping = false;
@@ -66,7 +67,13 @@ bool audioInit(void) {
 }
 
 bool audioPlay(int num) {
+
 	ndspChnWaveBufClear(num);
+	ndspChnReset(num);
+	ndspChnInitParams(num);
+	ndspChnSetInterp(num, NDSP_INTERP_LINEAR);
+	ndspChnSetRate(num, SAMPLE_RATE);
+	ndspChnSetFormat(num, NDSP_FORMAT_MONO_PCM16);
 	ndspChnWaveBufAdd(num, &waveBuf[num]);
 	return true;
 }

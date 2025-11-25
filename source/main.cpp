@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "audio.h"
 #include "header.h"
+#define SPRITES_NUMER 4
 #define BUFFER_SIZE 160
 
 C2D_Sprite sprites[32];	//画像用
@@ -9,9 +10,10 @@ static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 int scene_state = 0;
+bool isLeft = false, isRight = false, isUp = false;
 char buffer[BUFFER_SIZE];
 
-void draw_debug(float x, float y, const char *text) {
+inline void draw_debug(float x, float y, const char *text) {
 
 	//使用例
 	//snprintf(get_buffer(), BUFFER_SIZE, "%d", 10);
@@ -27,6 +29,22 @@ char *get_buffer() {
 	return buffer;
 }
 
+inline void notes_button() {
+
+	if (key == KEY_A || key == KEY_B || key == KEY_X || key == KEY_Y) {
+		isRight = true;
+		audioPlay(0);
+	}
+	if (key == KEY_DUP || key == KEY_DDOWN || key == KEY_DLEFT || key == KEY_DRIGHT) {
+		isLeft = true;
+		audioPlay(1);
+	}
+	if (key == KEY_L || key == KEY_R || key == KEY_ZL || key == KEY_ZR) {
+		isUp = true;
+		audioPlay(3);
+	}
+}
+
 int main() {
 
 	romfsInit();
@@ -40,6 +58,7 @@ int main() {
 
 	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
+	audioPlay(0);
 
 	while (aptMainLoop()) {
 
@@ -62,13 +81,23 @@ int main() {
 			draw_debug(120, 70, get_buffer());
 			draw_debug(120, 100, "Now Loading...");
 			C3D_FrameEnd(0);
-			scene_state = 0;
-			if (key == KEY_A) audioPlay(0);
+			spriteSheet = C2D_SpriteSheetLoad("romfs:/gfx/sprites.t3x");
+			if (!spriteSheet) svcBreak(USERBREAK_PANIC);
+			for (int i = 0, j = SPRITES_NUMER; i < j; ++i) {
+				C2D_SpriteFromSheet(&sprites[i], spriteSheet, i);
+				C2D_SpriteSetCenter(&sprites[i], 0.5f, 0.5f);
+				C2D_SpriteSetPos(&sprites[i], BOTTOM_WIDTH * 0.5, BOTTOM_HEIGHT * 0.5);
+			}
+			scene_state = 1;
 			break;
 
-		case 1:	//test
+		case 1:	//SOUNDTEST
 
-			draw_debug(0, 0, "debug ok");
+			draw_debug(0, 0, "SOUNDTEST");
+			if (isRight) C2D_DrawImage(sprites[0].image, &sprites[0].params, NULL);
+			if (isLeft) C2D_DrawImage(sprites[1].image, &sprites[1].params, NULL);
+			if (isLeft && isRight) C2D_DrawImage(sprites[2].image, &sprites[2].params, NULL);
+			if (isUp) C2D_DrawImage(sprites[3].image, &sprites[3].params, NULL);
 			break;
 		}
 		C3D_FrameEnd(0);
