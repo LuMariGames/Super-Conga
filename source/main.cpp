@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "audio.h"
 #include "header.h"
 #define BUFFER_SIZE 160
 
@@ -37,10 +38,10 @@ int main() {
 
 	while (aptMainLoop()) {
 
-		if (keyhold == KEY_START) break;
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown(), keyhold = hidKeysHeld();
+		if (keyhold == KEY_START) break;
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
 		//上画面
@@ -57,7 +58,7 @@ int main() {
 			draw_debug(120, 100, "Now Loading...");
 			C3D_FrameEnd(0);
 			scene_state = 0;
-			if (key == KEY_A) audioplay(0);
+			if (key == KEY_A) audioPlay(0);
 			break;
 
 		case 1:	//test
@@ -67,6 +68,7 @@ int main() {
 		}
 		C3D_FrameEnd(0);
 	}
+	audioExit()
 	exit(0);
 }
 
