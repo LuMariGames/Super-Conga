@@ -31,18 +31,18 @@ char *get_buffer() {
 
 inline void notes_button(unsigned int key) {
 
-	if (key == KEY_A || key == KEY_B || key == KEY_X || key == KEY_Y) {
+	if (key & KEY_A || key & KEY_B || key & KEY_X || key & KEY_Y) {
 		isRight = true;
 		audioPlay(0);
 	}
-	if (key == KEY_DUP || key == KEY_DDOWN || key == KEY_DLEFT || key == KEY_DRIGHT) {
+	if (key & KEY_DUP || key & KEY_DDOWN || key & KEY_DLEFT || key & KEY_DRIGHT) {
 		isLeft = true;
 		audioPlay(1);
 	}
 	if (isLeft && isRight) {
 		isLeft = false, isRight = false, isDouble = true;
 	}
-	if (key == KEY_L || key == KEY_R || key == KEY_ZL || key == KEY_ZR) {
+	if (key & KEY_L || key & KEY_R || key & KEY_ZL || key & KEY_ZR) {
 		isUp = true;
 		audioPlay(3);
 	}
