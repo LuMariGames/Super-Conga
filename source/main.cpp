@@ -12,6 +12,8 @@ C2D_Text dynText;
 int scene_state = 0;
 bool isLeft = false, isRight = false, isDouble = false, isUp = false;
 char buffer[BUFFER_SIZE];
+LIST_T List[LIST_MAX];
+NOTES_T Notes[NOTES_MAX];
 
 inline void draw_debug(float x, float y, const char *text) {
 
@@ -24,6 +26,36 @@ inline void draw_debug(float x, float y, const char *text) {
 	C2D_TextOptimize(&dynText);
 	C2D_DrawText(&dynText, C2D_WithColor, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(0.0f, 1.0f, 0.0f, 1.0f));
 }
+
+/*inline void draw_text(float x, float y, const char *text, float r, float g, float b) {
+
+	//使用例
+	//snprintf(get_buffer(), BUFFER_SIZE, "%d", 10);
+	//draw_debug(300, 0, get_buffer());
+
+	C2D_TextBufClear(g_dynamicBuf);
+	C2D_TextParse(&dynText, g_dynamicBuf, text);
+	C2D_TextOptimize(&dynText);
+	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
+}
+
+inline int ctoi(char c) {
+
+	switch (c) {
+	case '1': return 1;
+	case '2': return 2;
+	case '3': return 3;
+	case '4': return 4;
+	default: return 0;
+	}
+}
+
+inline void load_file_main() {
+
+	chdir(DEFAULT_DIR);
+	load_file_list(DEFAULT_DIR);
+	SongNumber = SongCount;
+}*/
 
 char *get_buffer() {
 	return buffer;
@@ -104,6 +136,12 @@ int main() {
 			if (isLeft) C2D_DrawImage(sprites[1].image, &sprites[1].params, NULL);
 			if (isDouble) C2D_DrawImage(sprites[2].image, &sprites[2].params, NULL);
 			if (isUp) C2D_DrawImage(sprites[3].image, &sprites[3].params, NULL);
+			break;
+
+		case 2:	//NOTESTEST
+
+			notes_button(key);
+			
 			break;
 		}
 		C3D_FrameEnd(0);
