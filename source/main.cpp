@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "audio.h"
+#include "main.h"
 #include "header.h"
 #define SPRITES_NUMER 4
 #define BUFFER_SIZE 160
